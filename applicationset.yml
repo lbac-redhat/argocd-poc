@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: app-environments
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/lbac-redhat/argocd-poc
+        revision: main
+        files:
+          - path: "appset/**/appset-config.yml"
+  template:
+    metadata:
+      name: '{{ path.basename }}'
+    spec:
+      destination:
+        namespace: '{{ path.basename }}'
+        server: https://kubernetes.default.svc
+      project: default
+      source:
+        helm:
+          valueFiles: |
+            - {{ path }}/helmValues.yml
+        path: environment
+        repoURL: https://github.com/lbac-redhat/helmcharts-poc.git
+        targetRevision: main
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+        automated:
+          prune: true
+          selfHeal: true
