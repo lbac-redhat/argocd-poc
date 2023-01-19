@@ -1,2 +1,3 @@
-size: "medium"
-adminGroupName: "test-group"
+values: |
+  size: "medium"
+  adminGroupName: "test-group"

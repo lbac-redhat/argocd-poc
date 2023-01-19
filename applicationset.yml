@@ -8,7 +8,7 @@ spec:
         repoURL: https://github.com/lbac-redhat/argocd-poc
         revision: main
         files:
-          - path: "appset/**/appset-config.yml"
+          - path: "appset/**/helmValues.yml"
   template:
     metadata:
       name: '{{ path.basename }}'
@@ -19,8 +19,8 @@ spec:
       project: default
       source:
         helm:
-          valueFiles: |
-            - {{ path }}/helmValues.yml
+          values: |
+           {{ values }} 
         path: environment
         repoURL: https://github.com/lbac-redhat/helmcharts-poc.git
         targetRevision: main
