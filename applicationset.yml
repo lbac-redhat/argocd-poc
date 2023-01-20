@@ -12,6 +12,8 @@ spec:
   template:
     metadata:
       name: '{{ path.basename }}'
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
     spec:
       destination:
         namespace: '{{ path.basename }}'
