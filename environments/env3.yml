@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: env3
+  namespace: openshift-gitops
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: env3
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    helm:
+      values: |
+        size: small
+        adminGroupName: test-group
+    path: environment
+    repoURL: https://github.com/lbac-redhat/helmcharts-poc.git
+    targetRevision: main
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
