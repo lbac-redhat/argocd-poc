@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: app-environments
+  name: app-environments-test
 spec:
   generators:
     - git:
@@ -22,13 +22,12 @@ spec:
       source:
         helm:
           values: |
-           {{ values }} 
+            namespace_name: '{{ path.basename }}'
+            {{ values }}
         path: environment
         repoURL: https://github.com/lbac-redhat/helmcharts-poc.git
         targetRevision: main
       syncPolicy:
-        syncOptions:
-          - CreateNamespace=true
         automated:
           prune: true
           selfHeal: true
